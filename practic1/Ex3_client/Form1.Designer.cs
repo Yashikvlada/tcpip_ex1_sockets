@@ -115,7 +115,7 @@
             // textBox_console
             // 
             this.textBox_console.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.textBox_console.ForeColor = System.Drawing.SystemColors.Info;
+            this.textBox_console.ForeColor = System.Drawing.Color.LightSteelBlue;
             this.textBox_console.Location = new System.Drawing.Point(210, 12);
             this.textBox_console.Multiline = true;
             this.textBox_console.Name = "textBox_console";

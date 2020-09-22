@@ -19,7 +19,8 @@ namespace Ex3_client
         public Form_client()
         {
             InitializeComponent();
-            textBox_console.Enabled = false;
+            textBox_console.ReadOnly = true;
+
             OnOffSendInfo();
             FormClosed += Form_client_FormClosed;
         }

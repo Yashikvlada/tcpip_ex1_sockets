@@ -14,7 +14,7 @@ namespace ex1_server
         public Form_server()
         {
             InitializeComponent();
-            textBox_console.Enabled = false;
+            textBox_console.ReadOnly = true;
 
             FormClosing += Form_server_FormClosing;
         }
@@ -34,6 +34,8 @@ namespace ex1_server
             }
             try
             {
+                button_listen.Enabled = false;
+
                 IPAddress ip = IPAddress.Parse(textBox_ip.Text);
                 IPEndPoint endPoint = new IPEndPoint(ip, int.Parse(textBox_port.Text));
                 _serverSocket = new Socket(
@@ -53,6 +55,7 @@ namespace ex1_server
             catch(Exception ex)
             {
                 textBox_console.Text += "\r\n" + ex.Message;
+                button_listen.Enabled = true;
             }
         }
         private void AcceptThreadFunct()

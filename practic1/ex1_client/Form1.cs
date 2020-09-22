@@ -12,7 +12,7 @@ namespace ex1_client
         public Form_client()
         {
             InitializeComponent();
-            textBox_console.Enabled = false;
+            textBox_console.ReadOnly = true;
 
             FormClosed += Form_client_FormClosed;
         }
@@ -32,6 +32,8 @@ namespace ex1_client
             }
             try
             {
+                button_connect.Enabled = false;
+
                 IPAddress ip = IPAddress.Parse(textBox_ip.Text);
                 IPEndPoint endPoint = new IPEndPoint(ip, int.Parse(textBox_port.Text));
                 _clientSocket = new Socket(
@@ -53,6 +55,7 @@ namespace ex1_client
             catch(Exception ex)
             {
                 textBox_console.Text += "\r\n"+ex.Message;
+                button_connect.Enabled = true;
             }
 
         }

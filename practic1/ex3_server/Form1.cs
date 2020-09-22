@@ -20,7 +20,7 @@ namespace ex3_server
         public Form_server()
         {
             InitializeComponent();
-            textBox_console.Enabled = false;
+            textBox_console.ReadOnly = true;
 
             FormClosing += Form_server_FormClosing;
             OnOffSendInfo();
