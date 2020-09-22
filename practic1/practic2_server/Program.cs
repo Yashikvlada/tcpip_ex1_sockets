@@ -18,7 +18,7 @@ namespace practic2_server
                 AddressFamily.InterNetwork,
                 SocketType.Stream,
                 ProtocolType.IP);
-
+            
             sock.Bind(endPoint);
             sock.Listen(1);
             Console.WriteLine("Server on!");
