@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace ex1_client
 {
@@ -21,19 +14,12 @@ namespace ex1_client
             InitializeComponent();
             textBox_console.Enabled = false;
 
-            OnOffSendInfo();
+            FormClosed += Form_client_FormClosed;
         }
 
-        private void OnOffConnectInfo()
+        private void Form_client_FormClosed(object sender, FormClosedEventArgs e)
         {
-            textBox_ip.Enabled = !textBox_ip.Enabled;
-            textBox_port.Enabled = !textBox_port.Enabled;
-            button_connect.Enabled = !button_connect.Enabled;
-        }
-        private void OnOffSendInfo()
-        {
-            textBox_message.Enabled = !textBox_message.Enabled;
-            button_send.Enabled = !button_send.Enabled;
+            CloseConnection();
         }
 
         private void button_connect_Click(object sender, EventArgs e)
@@ -56,11 +42,13 @@ namespace ex1_client
                 _clientSocket.Connect(endPoint);
                 textBox_console.Text += "\r\nConnected!";
 
-                OnOffConnectInfo();
-                OnOffSendInfo();
+                string msgFromServer = ReceiveMessage();
+                textBox_console.Text += $"\r\nВ {DateTime.Now.Hour}:{DateTime.Now.Second} от [{ip}] получена строка: {msgFromServer}";
 
-                Thread receiveThread = new Thread(new ThreadStart(ReceiveThreadFunct));
-                receiveThread.Start();
+                SendMessage("Привет сервер!");
+
+                CloseConnection();
+
             }
             catch(Exception ex)
             {
@@ -68,28 +56,32 @@ namespace ex1_client
             }
 
         }
-        private void ReceiveThreadFunct()
+        private string ReceiveMessage()
         {
-            while (_clientSocket!=null && _clientSocket.Connected)
-            {
-                byte[] buff = new byte[1024];
-                int len = _clientSocket.Receive(buff);
+            string result = string.Empty;
 
-                string recMsg = "\r\nSERVER:" + Encoding.Unicode.GetString(buff, 0, len);
-                textBox_console.Text += recMsg;
-            }
+            byte[] buff = new byte[1024];
+            int len = _clientSocket.Receive(buff);
+
+            result = Encoding.Unicode.GetString(buff, 0, len);
+
+            return result;
         }
-        private void button_send_Click(object sender, EventArgs e)
+        private void SendMessage(string msg)
         {
-            if (_clientSocket == null || !_clientSocket.Connected)
+            _clientSocket.Send(Encoding.Unicode.GetBytes(msg));
+        }       
+        private void CloseConnection()
+        {
+            if (_clientSocket != null)
             {
-                textBox_console.Text += "\r\nCan't send! Connect to server first!";
-                return;
+                if (_clientSocket.Connected)
+                    _clientSocket.Shutdown(SocketShutdown.Both);
+                _clientSocket.Close();                              
             }
 
-            string sendMsg = textBox_message.Text;
-            _clientSocket.Send(Encoding.Unicode.GetBytes(sendMsg));
-            textBox_console.Text += $"\r\nCLIENT: {sendMsg}";
+            textBox_console.Text += $"\r\nConnection closed!";
         }
+
     }
 }
