@@ -37,7 +37,8 @@ namespace ex1_server
         {
             if (_serverSocket != null)
             {
-                _serverSocket.Shutdown(SocketShutdown.Both);
+                if(_serverSocket.Connected)
+                    _serverSocket.Shutdown(SocketShutdown.Both);
                 _serverSocket.Close();
             }
             try
@@ -55,7 +56,8 @@ namespace ex1_server
                 textBox_console.Text += "\r\nServer on!";
 
                 Thread listenThread = 
-                    new Thread(new ThreadStart(AcceptThreadFunct));                
+                    new Thread(new ThreadStart(AcceptThreadFunct));
+                listenThread.Start();
             }
             catch(Exception ex)
             {
@@ -78,43 +80,53 @@ namespace ex1_server
         {
             try
             {
-                BeginInvoke(new MethodInvoker(OnOffServerInfo));
+                OnOffServerInfo();
 
-                Invoke(new MethodInvoker(
-                    ()=> { textBox_console.Text += "\r\nWaiting...";}));
+                textBox_console.Text += "\r\nWaiting...";
                 
                 _clientSocket = _serverSocket.Accept();
 
-                Invoke(new MethodInvoker(
-                    () => { textBox_console.Text += "\r\nClient connected!"; }));               
+                textBox_console.Text += "\r\nClient connected!";
+
+                OnOffSendInfo();
+
+                ReceiveThreadFunct();
             }
             catch(Exception ex)
             {
-                Invoke(new MethodInvoker(
-                    () => { textBox_console.Text += "\r\n" + ex.Message; }));                
+                 textBox_console.Text += "\r\n" + ex.Message;                
+            }
+        }
+        private void ReceiveThreadFunct()
+        {
+            while (_clientSocket != null && _clientSocket.Connected)
+            {
+                byte[] buff = new byte[1024];
+                int len = _clientSocket.Receive(buff);
+
+                string recMsg = "\r\nCLIENT:" + Encoding.Unicode.GetString(buff, 0, len);
+                textBox_console.Text += recMsg;
             }
         }
         private void button_send_Click(object sender, EventArgs e)
         {
-            if (_clientSocket == null)
+            if (_clientSocket == null || !_clientSocket.Connected)
             {
-                textBox_console.Text += "\r\nCan't send. Start server first!";
+                textBox_console.Text += "\r\nCan't send. No client connected!";
                 return;
             }
             try
             {
                 string sendMsg = textBox_message.Text;
                 _clientSocket.Send(Encoding.Unicode.GetBytes(sendMsg));
+                textBox_console.Text += $"\r\nSERVER: {sendMsg}";
             }
             catch(Exception ex)
             {
                 textBox_console.Text += "\r\n" + ex.Message;
             }
-            finally
-            {
-                _clientSocket.Shutdown(SocketShutdown.Both);
-                _clientSocket.Close();
-            }
+
         }
+        
     }
 }

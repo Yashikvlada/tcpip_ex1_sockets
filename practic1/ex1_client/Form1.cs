@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace ex1_client
 {
@@ -57,6 +58,9 @@ namespace ex1_client
 
                 OnOffConnectInfo();
                 OnOffSendInfo();
+
+                Thread receiveThread = new Thread(new ThreadStart(ReceiveThreadFunct));
+                receiveThread.Start();
             }
             catch(Exception ex)
             {
@@ -64,7 +68,17 @@ namespace ex1_client
             }
 
         }
+        private void ReceiveThreadFunct()
+        {
+            while (_clientSocket!=null && _clientSocket.Connected)
+            {
+                byte[] buff = new byte[1024];
+                int len = _clientSocket.Receive(buff);
 
+                string recMsg = "\r\nSERVER:" + Encoding.Unicode.GetString(buff, 0, len);
+                textBox_console.Text += recMsg;
+            }
+        }
         private void button_send_Click(object sender, EventArgs e)
         {
             if (_clientSocket == null || !_clientSocket.Connected)
