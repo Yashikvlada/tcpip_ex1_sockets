@@ -111,9 +111,14 @@ namespace ex3_server
                 byte[] buff = new byte[1024];
                 int len = _clientSocket.Receive(buff);
 
+                if (len == 0)
+                    break;
+
                 string recMsg = $"\r\n[{DateTime.Now}] TO ME: {Encoding.Unicode.GetString(buff, 0, len)}";
                 textBox_console.Text += recMsg;
             }
+            CloseConnection();
+
         }
         private void button_send_Click(object sender, EventArgs e)
         {
