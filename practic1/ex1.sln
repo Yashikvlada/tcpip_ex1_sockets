@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex3_server", "ex3_server\ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex3_client", "Ex3_client\Ex3_client.csproj", "{746D652B-A901-4A40-8E4F-AA6E3C158351}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex2_client", "ex2_client\ex2_client.csproj", "{D791B24F-C10E-49BB-8EE4-91B673D208A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex2_server", "ex2_server\ex2_server.csproj", "{3216E219-0F25-4D73-B290-8266259A9605}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{746D652B-A901-4A40-8E4F-AA6E3C158351}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{746D652B-A901-4A40-8E4F-AA6E3C158351}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{746D652B-A901-4A40-8E4F-AA6E3C158351}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D791B24F-C10E-49BB-8EE4-91B673D208A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D791B24F-C10E-49BB-8EE4-91B673D208A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D791B24F-C10E-49BB-8EE4-91B673D208A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D791B24F-C10E-49BB-8EE4-91B673D208A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3216E219-0F25-4D73-B290-8266259A9605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3216E219-0F25-4D73-B290-8266259A9605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3216E219-0F25-4D73-B290-8266259A9605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3216E219-0F25-4D73-B290-8266259A9605}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

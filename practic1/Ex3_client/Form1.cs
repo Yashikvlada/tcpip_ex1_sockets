@@ -16,9 +16,16 @@ namespace Ex3_client
     public partial class Form_client : Form
     {
         private Socket _clientSocket = null;
+        private Color _baseConsoleClr;
+        private Color _clientConsoleClr;
+        private Color _serverConsoleClr;
         public Form_client()
         {
             InitializeComponent();
+            _baseConsoleClr = textBox_console.ForeColor;
+            _clientConsoleClr = Color.LawnGreen;
+            _serverConsoleClr = Color.DarkRed;
+
             textBox_console.ReadOnly = true;
 
             OnOffSendInfo();
@@ -81,7 +88,8 @@ namespace Ex3_client
                 byte[] buff = new byte[1024];
                 int len = _clientSocket.Receive(buff);
 
-                string recMsg = "\r\nSERVER:" + Encoding.Unicode.GetString(buff, 0, len);
+                string recMsg = $"\r\n[{DateTime.Now}] TO ME: {Encoding.Unicode.GetString(buff, 0, len)}";
+
                 textBox_console.Text += recMsg;
             }
         }
@@ -99,7 +107,8 @@ namespace Ex3_client
             {
                 string sendMsg = textBox_message.Text;
                 _clientSocket.Send(Encoding.Unicode.GetBytes(sendMsg));
-                textBox_console.Text += $"\r\nCLIENT: {sendMsg}";
+
+                textBox_console.Text += $"\r\n[{DateTime.Now}] I: {sendMsg}";
             }
             catch (Exception ex)
             {

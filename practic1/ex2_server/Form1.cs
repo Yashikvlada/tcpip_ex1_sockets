@@ -11,7 +11,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace ex3_server
+namespace ex2_server
 {
     public partial class Form_server : Form
     {
@@ -23,21 +23,11 @@ namespace ex3_server
             textBox_console.ReadOnly = true;
 
             FormClosing += Form_server_FormClosing;
-            OnOffSendInfo();
-
-            GetHostIp();
         }
 
         private void Form_server_FormClosing(object sender, FormClosingEventArgs e)
         {
             CloseConnection();
-        }
-
-        private void GetHostIp()
-        {
-            string hostName = Dns.GetHostName();
-            var ip = Dns.GetHostAddresses(hostName);
-            comboBox_ip.Items.AddRange(ip);
         }
 
         private void button_listen_Click(object sender, EventArgs e)
@@ -50,7 +40,9 @@ namespace ex3_server
             }
             try
             {
-                IPAddress ip = IPAddress.Parse(comboBox_ip.Text);
+                button_listen.Enabled = false;
+
+                IPAddress ip = IPAddress.Parse(textBox_ip.Text);
                 IPEndPoint endPoint = new IPEndPoint(ip, int.Parse(textBox_port.Text));
                 _serverSocket = new Socket(
                     AddressFamily.InterNetwork,
@@ -69,73 +61,55 @@ namespace ex3_server
             catch (Exception ex)
             {
                 textBox_console.Text += "\r\n" + ex.Message;
+                button_listen.Enabled = true;
             }
         }
-        private void OnOffSendInfo()
-        {
-            textBox_message.Enabled = !textBox_message.Enabled;
-            button_send.Enabled = !button_send.Enabled;
-        }
-        private void OnOffServerInfo()
-        {
-            comboBox_ip.Enabled = !comboBox_ip.Enabled;
-            textBox_port.Enabled = !textBox_port.Enabled;
-            button_listen.Enabled = !button_listen.Enabled;
-        }
-
         private void AcceptThreadFunct()
         {
             try
             {
-                OnOffServerInfo();
-
                 textBox_console.Text += "\r\nWaiting...";
 
                 _clientSocket = _serverSocket.Accept();
 
                 textBox_console.Text += "\r\nClient connected!";
 
-                OnOffSendInfo();
+                string msgFromClient = ReceiveMessage();
+                textBox_console.Text += $"\r\nВ {DateTime.Now.Hour}:{DateTime.Now.Second} от " +
+                    $"[{_clientSocket.RemoteEndPoint}] получена строка: {msgFromClient}";
 
-                ReceiveThreadFunct();
+                string sendMsg = string.Empty;
+                if (msgFromClient == "date")
+                    sendMsg = $"{DateTime.Now.Day}d:{DateTime.Now.Month}m:{DateTime.Now.Year}y";
+                else if (msgFromClient == "time")
+                    sendMsg = $"{DateTime.Now.Hour}h:{DateTime.Now.Minute}m:{DateTime.Now.Second}s";
+                else
+                    sendMsg = "Wrong query!";
+
+                SendMessage(sendMsg);
+
+                CloseConnection();
+
             }
             catch (Exception ex)
             {
                 textBox_console.Text += "\r\n" + ex.Message;
             }
         }
-        private void ReceiveThreadFunct()
+        private string ReceiveMessage()
         {
-            while (_clientSocket != null && _clientSocket.Connected)
-            {
-                byte[] buff = new byte[1024];
-                int len = _clientSocket.Receive(buff);
+            string result = string.Empty;
 
-                string recMsg = $"\r\n[{DateTime.Now}] TO ME: {Encoding.Unicode.GetString(buff, 0, len)}";
-                textBox_console.Text += recMsg;
-            }
+            byte[] buff = new byte[1024];
+            int len = _clientSocket.Receive(buff);
+
+            result = Encoding.Unicode.GetString(buff, 0, len);
+
+            return result;
         }
-        private void button_send_Click(object sender, EventArgs e)
+        private void SendMessage(string msg)
         {
-            if (_clientSocket == null || !_clientSocket.Connected)
-            {
-                textBox_console.Text += "\r\nCan't send. No client connected!";
-                return;
-            }
-            try
-            {
-                if (textBox_message.Text == string.Empty)
-                    return;
-
-                string sendMsg = textBox_message.Text;
-                _clientSocket.Send(Encoding.Unicode.GetBytes(sendMsg));
-                textBox_console.Text += $"\r\n[{DateTime.Now}] I: {sendMsg}";
-            }
-            catch (Exception ex)
-            {
-                textBox_console.Text += "\r\n" + ex.Message;
-            }
-
+            _clientSocket.Send(Encoding.Unicode.GetBytes(msg));
         }
         private void CloseConnection()
         {
@@ -156,9 +130,7 @@ namespace ex3_server
                 _serverSocket.Close();
                 textBox_console.Text += $"\r\nServer closed!";
             }
-
-            OnOffSendInfo();
-            OnOffServerInfo();
+            button_listen.Enabled = true;
         }
 
     }
