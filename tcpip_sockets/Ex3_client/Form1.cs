@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
@@ -16,17 +10,10 @@ namespace Ex3_client
     public partial class Form_client : Form
     {
         private Socket _clientSocket = null;
-        private Color _baseConsoleClr;
-        private Color _clientConsoleClr;
-        private Color _serverConsoleClr;
+
         public Form_client()
         {
             InitializeComponent();
-            _baseConsoleClr = textBox_console.ForeColor;
-            _clientConsoleClr = Color.LawnGreen;
-            _serverConsoleClr = Color.DarkRed;
-
-            textBox_console.ReadOnly = true;
 
             OnOffSendInfo();
             FormClosed += Form_client_FormClosed;
@@ -134,4 +121,5 @@ namespace Ex3_client
             OnOffConnectInfo();
         }
     }
+   
 }
