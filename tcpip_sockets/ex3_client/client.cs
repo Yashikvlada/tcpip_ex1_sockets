@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Ex3_client
 {
@@ -15,6 +12,7 @@ namespace Ex3_client
     {
         private string _log;
         private Socket _clientSocket;
+        private bool _isConnected = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -29,7 +27,20 @@ namespace Ex3_client
                     OnPropertyChanged();
                 }
             }
+        }      
+        public bool IsConnected
+        {
+            get => _isConnected;
+            set
+            {
+                if (_isConnected != value)
+                {
+                    _isConnected = value;
+                    OnPropertyChanged();
+                }
+            }
         }
+        
         public ClientSide()
         {
 
@@ -53,6 +64,7 @@ namespace Ex3_client
 
                 _clientSocket.Connect(endPoint);
                 Log += "Connected!";
+                IsConnected = true;
 
                 Thread receiveThread = new Thread(new ThreadStart(ReceiveThreadFunct));
                 receiveThread.Start();
@@ -61,6 +73,8 @@ namespace Ex3_client
             {
                 Log += ex.Message;
             }
+
+            
         }
         private void ReceiveThreadFunct()
         {
@@ -77,6 +91,7 @@ namespace Ex3_client
                 Log += recMsg;
             }
             CloseConnection();
+            IsConnected = false;
         }
         public void Send(string msg)
         {
@@ -109,8 +124,8 @@ namespace Ex3_client
             }
 
             Log += "Connection closed!";
+            IsConnected = false;
         }
-
         private void OnPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

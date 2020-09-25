@@ -1,124 +1,69 @@
 ﻿using System;
-using System.Text;
 using System.Windows.Forms;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
 
 namespace Ex3_client
 {
     public partial class Form_client : Form
     {
-        private Socket _clientSocket = null;
+        private ClientSide _clientSocket;
 
         public Form_client()
         {
             InitializeComponent();
 
-            OnOffSendInfo();
+            _clientSocket = new ClientSide();
+
+            BindUItoClientSide();
+
             FormClosed += Form_client_FormClosed;
         }
+        private void BindUItoClientSide()
+        {
+            //привязываем консоль winforms к логеру объекта ClientSide
+            textBox_console.DataBindings.Add("Text", _clientSocket, "Log", false, DataSourceUpdateMode.OnPropertyChanged);
 
+            //привязка к обратному значению IsConnected объекта ClientSide
+
+            //если IsConnected==false, значит нужно включить контролы связанные с 
+            //созданием нового подключения, поэтому нужен ReverseBoolProperty
+            Binding ipBinding = new Binding("Enabled", _clientSocket, "IsConnected");
+            ipBinding.Parse += ReverseBoolProperty;
+            ipBinding.Format += ReverseBoolProperty;
+            textBox_ip.DataBindings.Add(ipBinding);
+
+            Binding portBinding = new Binding("Enabled", _clientSocket, "IsConnected");
+            portBinding.Parse += ReverseBoolProperty;
+            portBinding.Format += ReverseBoolProperty;
+            textBox_port.DataBindings.Add(portBinding);
+
+            Binding connectBinding = new Binding("Enabled", _clientSocket, "IsConnected");
+            connectBinding.Parse += ReverseBoolProperty;
+            connectBinding.Format += ReverseBoolProperty;
+            button_connect.DataBindings.Add(connectBinding);
+
+            ////привязка к прямому значению IsConnected объекта ClientSide.
+            ////если IsConnected==true , то панель с отправкой можно включить и наоборот
+            Binding msgBinding = new Binding("Enabled", _clientSocket, "IsConnected");
+            textBox_message.DataBindings.Add(msgBinding);
+
+            Binding sendBinding = new Binding("Enabled", _clientSocket, "IsConnected");
+            button_send.DataBindings.Add(sendBinding);
+        }
+        private void ReverseBoolProperty(object s, ConvertEventArgs e)
+        {
+            e.Value = !(bool)e.Value;
+        }
         private void Form_client_FormClosed(object sender, FormClosedEventArgs e)
         {
-            CloseConnection();
+            _clientSocket.CloseConnection();
         }
-
-        private void OnOffConnectInfo()
-        {
-            textBox_ip.Enabled = !textBox_ip.Enabled;
-            textBox_port.Enabled = !textBox_port.Enabled;
-            button_connect.Enabled = !button_connect.Enabled;
-        }
-        private void OnOffSendInfo()
-        {
-            textBox_message.Enabled = !textBox_message.Enabled;
-            button_send.Enabled = !button_send.Enabled;
-        }
-
         private void button_connect_Click(object sender, EventArgs e)
         {
-            if (_clientSocket != null)
-            {
-                if (_clientSocket.Connected)
-                    _clientSocket.Shutdown(SocketShutdown.Both);
-                _clientSocket.Close();
-            }
-            try
-            {
-                IPAddress ip = IPAddress.Parse(textBox_ip.Text);
-                IPEndPoint endPoint = new IPEndPoint(ip, int.Parse(textBox_port.Text));
-                _clientSocket = new Socket(
-                    AddressFamily.InterNetwork,
-                    SocketType.Stream,
-                    ProtocolType.IP);
-
-                _clientSocket.Connect(endPoint);
-                textBox_console.Text += "\r\nConnected!";
-
-                OnOffConnectInfo();
-                OnOffSendInfo();
-
-                Thread receiveThread = new Thread(new ThreadStart(ReceiveThreadFunct));
-                receiveThread.Start();
-            }
-            catch (Exception ex)
-            {
-                textBox_console.Text += "\r\n" + ex.Message;
-            }
-
-        }
-        private void ReceiveThreadFunct()
-        {
-            while (_clientSocket != null && _clientSocket.Connected)
-            {
-                byte[] buff = new byte[1024];
-                int len = _clientSocket.Receive(buff);
-
-                if (len == 0)
-                    break;
-
-                string recMsg = $"\r\n[{DateTime.Now}] TO ME: {Encoding.Unicode.GetString(buff, 0, len)}";
-
-                textBox_console.Text += recMsg;
-            }
-            CloseConnection();
+            _clientSocket.Connect(textBox_ip.Text, textBox_port.Text);
         }
         private void button_send_Click(object sender, EventArgs e)
         {
-            if (_clientSocket == null || !_clientSocket.Connected)
-            {
-                textBox_console.Text += "\r\nCan't send! Connect to server first!";
-                return;
-            }
-            if (textBox_message.Text == string.Empty)
-                return;
-
-            try
-            {
-                string sendMsg = textBox_message.Text;
-                _clientSocket.Send(Encoding.Unicode.GetBytes(sendMsg));
-
-                textBox_console.Text += $"\r\n[{DateTime.Now}] I: {sendMsg}";
-            }
-            catch (Exception ex)
-            {
-                textBox_console.Text += "\r\n" + ex.Message;
-            }
-        }
-        private void CloseConnection()
-        {
-            if (_clientSocket != null)
-            {
-                if (_clientSocket.Connected)
-                    _clientSocket.Shutdown(SocketShutdown.Both);
-                _clientSocket.Close();
-            }
-
-            textBox_console.Text += $"\r\nConnection closed!";
-
-            OnOffSendInfo();
-            OnOffConnectInfo();
+            _clientSocket.Send(textBox_message.Text);
         }
     }
    
