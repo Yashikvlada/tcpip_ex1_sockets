@@ -39,6 +39,7 @@
             this.textBox_console = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.checkBox_bot = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -149,6 +150,7 @@
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.checkBox_bot, 0, 8);
             this.tableLayoutPanel2.Controls.Add(this.button_send, 0, 7);
             this.tableLayoutPanel2.Controls.Add(this.textBox_message, 0, 6);
             this.tableLayoutPanel2.Controls.Add(this.label_ip, 0, 0);
@@ -160,7 +162,7 @@
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 8;
+            this.tableLayoutPanel2.RowCount = 9;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -169,8 +171,20 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(144, 394);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // checkBox_bot
+            // 
+            this.checkBox_bot.AutoSize = true;
+            this.checkBox_bot.Location = new System.Drawing.Point(3, 303);
+            this.checkBox_bot.Name = "checkBox_bot";
+            this.checkBox_bot.Size = new System.Drawing.Size(66, 17);
+            this.checkBox_bot.TabIndex = 29;
+            this.checkBox_bot.Text = "Chat bot";
+            this.checkBox_bot.UseVisualStyleBackColor = true;
+            this.checkBox_bot.CheckedChanged += new System.EventHandler(this.checkBox_bot_CheckedChanged);
             // 
             // Form_server
             // 
@@ -201,6 +215,7 @@
         private System.Windows.Forms.TextBox textBox_console;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.CheckBox checkBox_bot;
     }
 }
 

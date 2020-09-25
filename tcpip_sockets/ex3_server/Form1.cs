@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ex3_server
@@ -6,6 +9,7 @@ namespace ex3_server
     public partial class Form_server : Form
     {
         private ServerSide _serverSocket;
+        private Bot _bot;
         public Form_server()
         {
             InitializeComponent();
@@ -17,6 +21,9 @@ namespace ex3_server
             BindUItoClientSide();
 
             GetHostIp();
+
+            _bot = new Bot(_serverSocket.Send);
+            _bot.ReadWords("phrases.txt");
         }
 
         private void Form_server_FormClosing(object sender, FormClosingEventArgs e)
@@ -77,5 +84,67 @@ namespace ex3_server
             _serverSocket.Send(textBox_message.Text);           
         }
 
+        private void checkBox_bot_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_bot.Checked)
+                _bot.BotOn();
+            else
+                _bot.BotOff();
+            
+        }
+    }
+    public class Bot
+    {
+        public delegate void SendMsgDelegate(string msg);
+        private SendMsgDelegate _sendMsg;
+        private List<string> _phrases;
+        private bool _isOn;
+        public Bot(SendMsgDelegate sendMsg)
+        {
+            _phrases = new List<string>();
+            _sendMsg = sendMsg;           
+        }
+        public void ReadWords(string filePath)
+        {
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                while (!sr.EndOfStream)
+                {
+                    _phrases.Add(sr.ReadLine());
+                }
+            }
+        }
+        public void BotOn()
+        {
+            if (_phrases.Count == 0)
+                throw new ApplicationException("Empty bot base! (try to use Bot.ReadWords first)!");
+
+            _isOn = true;
+
+            Thread botThread = new Thread(new ThreadStart(BotWorkingThread));
+            botThread.Start();
+        }
+        private void BotWorkingThread()
+        {
+            Random rnd = new Random(new Guid().GetHashCode());
+
+            double elapsedTime=0;
+            while (_isOn)
+            {
+                if (elapsedTime == 0)
+                {
+                    elapsedTime = rnd.Next(1000000, 4000000);
+
+                    int index = rnd.Next(0, _phrases.Count - 1);
+                    _sendMsg(_phrases[index]);
+                }
+
+                --elapsedTime;
+            }
+        }
+        public void BotOff()
+        {
+            _isOn = false;
+        }
     }
 }
