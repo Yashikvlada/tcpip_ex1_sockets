@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
-namespace Ex3_client
+namespace ex3_client
 {
     public class ClientSide : INotifyPropertyChanged
     {

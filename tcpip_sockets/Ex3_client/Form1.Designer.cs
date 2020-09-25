@@ -1,4 +1,4 @@
-﻿namespace Ex3_client
+﻿namespace ex3_client
 {
     partial class Form_client
     {

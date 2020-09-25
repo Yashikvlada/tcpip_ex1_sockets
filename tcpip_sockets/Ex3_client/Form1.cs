@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Ex3_client
+namespace ex3_client
 {
     public partial class Form_client : Form
     {

@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex1_server", "ex1_server\ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex3_server", "ex3_server\ex3_server.csproj", "{3547BBFB-1D93-4301-8E4F-80633C19911D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex3_client", "Ex3_client\Ex3_client.csproj", "{746D652B-A901-4A40-8E4F-AA6E3C158351}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex3_client", "Ex3_client\ex3_client.csproj", "{746D652B-A901-4A40-8E4F-AA6E3C158351}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex2_client", "ex2_client\ex2_client.csproj", "{D791B24F-C10E-49BB-8EE4-91B673D208A1}"
 EndProject

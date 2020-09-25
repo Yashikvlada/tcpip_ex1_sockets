@@ -7,7 +7,7 @@
     <ProjectGuid>{A59A09FC-96AF-489A-92AF-513D3757914C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>practic1_client</RootNamespace>
-    <AssemblyName>practic1</AssemblyName>
+    <AssemblyName>practic1_client</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
