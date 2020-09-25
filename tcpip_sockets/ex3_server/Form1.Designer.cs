@@ -48,7 +48,7 @@
             this.comboBox_ip.FormattingEnabled = true;
             this.comboBox_ip.Location = new System.Drawing.Point(3, 16);
             this.comboBox_ip.Name = "comboBox_ip";
-            this.comboBox_ip.Size = new System.Drawing.Size(183, 21);
+            this.comboBox_ip.Size = new System.Drawing.Size(138, 21);
             this.comboBox_ip.TabIndex = 27;
             this.comboBox_ip.Text = "127.0.0.1";
             // 
@@ -56,7 +56,7 @@
             // 
             this.button_send.Location = new System.Drawing.Point(3, 274);
             this.button_send.Name = "button_send";
-            this.button_send.Size = new System.Drawing.Size(183, 23);
+            this.button_send.Size = new System.Drawing.Size(138, 23);
             this.button_send.TabIndex = 26;
             this.button_send.Text = "Send";
             this.button_send.UseVisualStyleBackColor = true;
@@ -77,7 +77,7 @@
             this.textBox_message.Multiline = true;
             this.textBox_message.Name = "textBox_message";
             this.textBox_message.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_message.Size = new System.Drawing.Size(183, 144);
+            this.textBox_message.Size = new System.Drawing.Size(138, 144);
             this.textBox_message.TabIndex = 24;
             this.textBox_message.Text = "Hello world!";
             // 
@@ -85,7 +85,7 @@
             // 
             this.button_listen.Location = new System.Drawing.Point(3, 82);
             this.button_listen.Name = "button_listen";
-            this.button_listen.Size = new System.Drawing.Size(183, 23);
+            this.button_listen.Size = new System.Drawing.Size(138, 23);
             this.button_listen.TabIndex = 23;
             this.button_listen.Text = "Listen";
             this.button_listen.UseVisualStyleBackColor = true;
@@ -104,7 +104,7 @@
             // 
             this.textBox_port.Location = new System.Drawing.Point(3, 56);
             this.textBox_port.Name = "textBox_port";
-            this.textBox_port.Size = new System.Drawing.Size(183, 20);
+            this.textBox_port.Size = new System.Drawing.Size(138, 20);
             this.textBox_port.TabIndex = 21;
             this.textBox_port.Text = "1024";
             // 
@@ -122,11 +122,12 @@
             this.textBox_console.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.textBox_console.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox_console.ForeColor = System.Drawing.Color.LightSteelBlue;
-            this.textBox_console.Location = new System.Drawing.Point(386, 59);
+            this.textBox_console.Location = new System.Drawing.Point(153, 3);
             this.textBox_console.Multiline = true;
             this.textBox_console.Name = "textBox_console";
+            this.textBox_console.ReadOnly = true;
             this.textBox_console.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_console.Size = new System.Drawing.Size(300, 308);
+            this.textBox_console.Size = new System.Drawing.Size(569, 394);
             this.textBox_console.TabIndex = 19;
             // 
             // tableLayoutPanel1
@@ -168,7 +169,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(319, 355);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(144, 394);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // Form_server
