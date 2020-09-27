@@ -15,7 +15,7 @@ namespace SocketsForEx3
         protected bool _isConnected = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        public string StopWord { get; set; }
         /// <summary>
         /// Свойство с уведомлением (можно забайндить в wf, wpf)
         /// </summary>
@@ -62,8 +62,14 @@ namespace SocketsForEx3
                 if (len == 0)
                     break;
 
-                string recMsg = $"TO ME: {Encoding.Unicode.GetString(buff, 0, len)}";
-                Log += recMsg;
+                string recMsg = Encoding.Unicode.GetString(buff, 0, len);
+                Log += $"TO ME: {recMsg}";
+
+                if (recMsg == StopWord)
+                {
+                    Log += $"Stop word [{recMsg}] received!";
+                    break;
+                }
             }
             CloseConnection();
             IsConnected = false;

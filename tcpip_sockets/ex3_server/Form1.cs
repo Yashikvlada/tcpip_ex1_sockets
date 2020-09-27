@@ -16,6 +16,7 @@ namespace ex3_server
             FormClosing += Form_server_FormClosing;
 
             _serverSocket = new ServerSide();
+            _serverSocket.StopWord = "bye";
 
             BindUItoClientSide();
 

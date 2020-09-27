@@ -15,6 +15,7 @@ namespace ex3_client
             InitializeComponent();
 
             _clientSocket = new ClientSide();
+            _clientSocket.StopWord = "bye";
 
             BindUItoClientSide();
 
