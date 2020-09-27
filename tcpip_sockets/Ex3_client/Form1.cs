@@ -8,6 +8,7 @@ namespace ex3_client
     public partial class Form_client : Form
     {
         private ClientSide _clientSocket;
+        private Bot _bot;
 
         public Form_client()
         {
@@ -18,6 +19,8 @@ namespace ex3_client
             BindUItoClientSide();
 
             FormClosed += Form_client_FormClosed;
+
+            _bot = new Bot(_clientSocket.Send);
         }
         private void BindUItoClientSide()
         {
@@ -66,6 +69,49 @@ namespace ex3_client
         private void button_send_Click(object sender, EventArgs e)
         {
             _clientSocket.Send(textBox_message.Text);
+        }
+
+        private void checkBox_bot_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (checkBox_bot.Checked)
+                    _bot.BotOn();
+                else
+                    _bot.BotOff();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                checkBox_bot.Checked = !checkBox_bot.Checked;
+            }
+        }
+
+        private void button_load_bot_base_Click(object sender, EventArgs e)
+        {
+            string fileName = "phrases.txt";
+
+            using (OpenFileDialog openFile = new OpenFileDialog())
+            {
+                if (openFile.ShowDialog() == DialogResult.OK)
+                {
+                    fileName = openFile.FileName;
+                }
+                else
+                {
+                    MessageBox.Show("Choose file pls!");
+                    return;
+                }
+            }
+
+            try
+            {
+                _bot.ReadWords(fileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
    
