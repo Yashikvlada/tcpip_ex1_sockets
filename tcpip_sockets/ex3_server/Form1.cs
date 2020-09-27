@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 using System.Windows.Forms;
+using ChatBot;
+using SocketsForEx3;
 
 namespace ex3_server
 {
@@ -23,7 +22,7 @@ namespace ex3_server
             GetHostIp();
 
             _bot = new Bot(_serverSocket.Send);
-            _bot.ReadWords("phrases.txt");
+           
         }
 
         private void Form_server_FormClosing(object sender, FormClosingEventArgs e)
@@ -77,7 +76,7 @@ namespace ex3_server
 
         private void button_listen_Click(object sender, EventArgs e)
         {
-            _serverSocket.Listen(comboBox_ip.Text, textBox_port.Text);
+            _serverSocket.Start(comboBox_ip.Text, textBox_port.Text);
         }
         private void button_send_Click(object sender, EventArgs e)
         {
@@ -86,65 +85,46 @@ namespace ex3_server
 
         private void checkBox_bot_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox_bot.Checked)
-                _bot.BotOn();
-            else
-                _bot.BotOff();
+            try
+            {
+                if (checkBox_bot.Checked)
+                    _bot.BotOn();
+                else
+                    _bot.BotOff();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                checkBox_bot.Checked = !checkBox_bot.Checked;
+            }
             
         }
-    }
-    public class Bot
-    {
-        public delegate void SendMsgDelegate(string msg);
-        private SendMsgDelegate _sendMsg;
-        private List<string> _phrases;
-        private bool _isOn;
-        public Bot(SendMsgDelegate sendMsg)
+
+        private void button_load_bot_base_Click(object sender, EventArgs e)
         {
-            _phrases = new List<string>();
-            _sendMsg = sendMsg;           
-        }
-        public void ReadWords(string filePath)
-        {
-            using (StreamReader sr = new StreamReader(filePath))
-            {
-                while (!sr.EndOfStream)
+            string fileName = "phrases.txt";
+
+            using (OpenFileDialog openFile = new OpenFileDialog())
+            {               
+                if (openFile.ShowDialog() == DialogResult.OK)
                 {
-                    _phrases.Add(sr.ReadLine());
+                    fileName = openFile.FileName;
+                }
+                else
+                {
+                    MessageBox.Show("Choose file pls!");
+                    return;
                 }
             }
-        }
-        public void BotOn()
-        {
-            if (_phrases.Count == 0)
-                throw new ApplicationException("Empty bot base! (try to use Bot.ReadWords first)!");
 
-            _isOn = true;
-
-            Thread botThread = new Thread(new ThreadStart(BotWorkingThread));
-            botThread.Start();
-        }
-        private void BotWorkingThread()
-        {
-            Random rnd = new Random(new Guid().GetHashCode());
-
-            double elapsedTime=0;
-            while (_isOn)
+            try
             {
-                if (elapsedTime == 0)
-                {
-                    elapsedTime = rnd.Next(1000000, 4000000);
-
-                    int index = rnd.Next(0, _phrases.Count - 1);
-                    _sendMsg(_phrases[index]);
-                }
-
-                --elapsedTime;
+                _bot.ReadWords(fileName);               
             }
-        }
-        public void BotOff()
-        {
-            _isOn = false;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

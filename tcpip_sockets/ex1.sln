@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex2_client", "ex2_client\ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex2_server", "ex2_server\ex2_server.csproj", "{3216E219-0F25-4D73-B290-8266259A9605}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot", "ChatBot\ChatBot.csproj", "{B1FCE875-CA8D-409C-9068-B781F4661D73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketsForEx3", "SocketsForEx3\SocketsForEx3.csproj", "{2712D3DF-3C0E-4B9D-BBDC-D54175F1C58E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{3216E219-0F25-4D73-B290-8266259A9605}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3216E219-0F25-4D73-B290-8266259A9605}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3216E219-0F25-4D73-B290-8266259A9605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1FCE875-CA8D-409C-9068-B781F4661D73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1FCE875-CA8D-409C-9068-B781F4661D73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1FCE875-CA8D-409C-9068-B781F4661D73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1FCE875-CA8D-409C-9068-B781F4661D73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2712D3DF-3C0E-4B9D-BBDC-D54175F1C58E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2712D3DF-3C0E-4B9D-BBDC-D54175F1C58E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2712D3DF-3C0E-4B9D-BBDC-D54175F1C58E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2712D3DF-3C0E-4B9D-BBDC-D54175F1C58E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

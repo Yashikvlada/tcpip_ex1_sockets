@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using ChatBot;
+using SocketsForEx3;
 
 namespace ex3_client
 {
@@ -59,7 +61,7 @@ namespace ex3_client
         }
         private void button_connect_Click(object sender, EventArgs e)
         {
-            _clientSocket.Connect(textBox_ip.Text, textBox_port.Text);
+            _clientSocket.Start(textBox_ip.Text, textBox_port.Text);
         }
         private void button_send_Click(object sender, EventArgs e)
         {
